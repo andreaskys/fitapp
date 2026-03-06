@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+:root {
+    --background: #fbfbfd; /* Apple's off-white background */
+    --foreground: #1d1d1f; /* Apple's deep charcoal text */
+}
+
+body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
+}
+
+/* Subtle, smooth scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    border: 2px solid var(--background);
+}
+
+@layer utilities {
+    .custom-scrollbar {
+        scrollbar-width: thin;
+        scrollbar-color: #e4e4e7 transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px; /* Extremely thin */
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: #e4e4e7; /* Tailwind zinc-200 */
+        border-radius: 20px; /* Perfect pill shape */
+    }
+
+    .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+        background-color: #d4d4d8; /* Tailwind zinc-300 */
+    }
+}
