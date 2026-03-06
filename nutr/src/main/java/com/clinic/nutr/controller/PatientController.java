@@ -1,5 +1,6 @@
 package com.clinic.nutr.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,28 +26,27 @@ public class PatientController {
     private final AppointmentRepository appointmentRepository;
     private final ClinicRepository clinicRepository;
 
-    @GetMapping
-    public List<Patient> getAllPatients(@RequestParam(required = false) Long clinicId) {
-        if (clinicId != null) {
-            return patientRepository.findByClinicId(clinicId);
-        }
-        return patientRepository.findAll();
-    }
-
     @PostMapping
-    public ResponseEntity<Patient> createPatient(@RequestBody Patient patient, @RequestParam Long clinicId){
-        Clinic managedClinic = clinicRepository.findById(clinicId)
-                .orElseThrow(() -> new RuntimeException("Clinic Workspace not found"));
-        patient.setClinic(managedClinic);
+    public ResponseEntity<Patient> createPatient(@RequestParam Long clinicId, @RequestBody Patient patient, Principal principal) {
+        Clinic verifiedClinic = clinicRepository.findByIdAndNutritionist_Email(clinicId, principal.getName())
+                .orElseThrow(() -> new RuntimeException("Security Alert: Unauthorized clinic access"));
+        patient.setClinic(verifiedClinic);
         Patient savedPatient = patientRepository.save(patient);
+
         return ResponseEntity.ok(savedPatient);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
-        return patientRepository.findById(id)
+    public ResponseEntity<Patient> getPatientById(@PathVariable Long id, Principal principal) {
+        return patientRepository.findByIdAndClinic_Nutritionist_Email(id, principal.getName())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Patient>> getPatientsByClinic(@RequestParam Long clinicId, Principal principal) {
+        List<Patient> securePatients = patientRepository.findByClinic_IdAndClinic_Nutritionist_Email(clinicId, principal.getName());
+        return ResponseEntity.ok(securePatients);
     }
 
     @PostMapping("/{patientId}/appointments")
@@ -97,9 +97,11 @@ public class PatientController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable Long id){
-        patientRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> deletePatient(@PathVariable Long id, Principal principal) {
+        Patient patient = patientRepository.findByIdAndClinic_Nutritionist_Email(id, principal.getName())
+                .orElseThrow(() -> new RuntimeException("Security Alert: Unauthorized deletion attempt"));
+        patientRepository.delete(patient);
+        return ResponseEntity.ok().build();
     }
 
 }

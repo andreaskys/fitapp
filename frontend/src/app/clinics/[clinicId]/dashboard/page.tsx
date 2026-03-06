@@ -97,10 +97,12 @@ export default function ClinicDashboard({ params }: { params: Promise<{ clinicId
                                 <p className="text-sm font-bold text-black truncate">Nutricionista</p>
                             </div>
 
-                            <button
-                                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-zinc-400 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors">
+                            <Link
+                                href="/settings"
+                                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-bold text-zinc-400 hover:text-black hover:bg-zinc-50 rounded-xl transition-colors"
+                            >
                                 <Settings size={16}/> Settings
-                            </button>
+                            </Link>
 
                             <button
                                 onClick={handleLogout}
@@ -122,9 +124,6 @@ export default function ClinicDashboard({ params }: { params: Promise<{ clinicId
                     <h1 className="text-4xl font-bold tracking-tight text-[#1d1d1f] mb-2">
                         {clinicName}
                     </h1>
-                    <p className="text-zinc-500 font-medium">
-                        Manage and access patient records for Session ID: {clinicId}
-                    </p>
                 </div>
 
                 <Link href={`/clinics/${clinicId}/patients/new`}>
@@ -132,7 +131,7 @@ export default function ClinicDashboard({ params }: { params: Promise<{ clinicId
                         whileHover={{scale: 1.02}} whileTap={{scale: 0.98}}
                         className="flex items-center gap-2 px-8 py-4 bg-black text-white rounded-[1.5rem] font-bold text-sm shadow-xl shadow-black/10 transition-all group"
                     >
-                        Add New Patient <UserPlus size={20} className="group-hover:translate-x-1 transition-transform"/>
+                        Adicionar Novo Paciente <UserPlus size={20} className="group-hover:translate-x-1 transition-transform"/>
                     </motion.button>
                 </Link>
             </motion.header>
@@ -146,8 +145,7 @@ export default function ClinicDashboard({ params }: { params: Promise<{ clinicId
                 <div
                     className="bg-white rounded-[2rem] p-8 border border-zinc-100 shadow-[0_20px_40px_rgba(0,0,0,0.02)] flex items-center justify-between">
                     <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-2">Total Active
-                            Patients</p>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-2">Pacientes Ativos </p>
                         <h2 className="text-5xl font-black text-black tracking-tighter">
                             {isLoading ? <Loader2
                                 className="animate-spin text-zinc-300"/> : metrics.totalPatients.toString().padStart(2, '0')}
@@ -162,8 +160,7 @@ export default function ClinicDashboard({ params }: { params: Promise<{ clinicId
                 <div
                     className="bg-white rounded-[2rem] p-8 border border-zinc-100 shadow-[0_20px_40px_rgba(0,0,0,0.02)] flex items-center justify-between">
                     <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-2">Sessions
-                            Today</p>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-400 mb-2">Consultas feita hoje</p>
                         <h2 className="text-5xl font-black text-black tracking-tighter">
                             {isLoading ? <Loader2
                                 className="animate-spin text-zinc-300"/> : metrics.appointmentsToday.toString().padStart(2, '0')}
@@ -184,7 +181,7 @@ export default function ClinicDashboard({ params }: { params: Promise<{ clinicId
                     <div className="flex items-center gap-2">
                         <UserCircle2 size={24} className="text-zinc-300"/>
                         <h2 className="text-sm font-bold tracking-[0.2em] uppercase text-zinc-400">
-                            Manage Clinic Roster
+                            Ficha de Pacientes
                         </h2>
                     </div>
                     {isLoading && <Loader2 size={16} className="text-zinc-300 animate-spin"/>}
@@ -193,8 +190,8 @@ export default function ClinicDashboard({ params }: { params: Promise<{ clinicId
                 <div className="flex flex-col gap-4">
                     {!isLoading && patients.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-12 text-zinc-400">
-                            <p className="font-medium">No patients found in this workspace.</p>
-                            <p className="text-sm mt-1">Click "Add New Patient" to start your first intake.</p>
+                            <p className="font-medium">Nenhum paciente cadastrado nesta clinica ainda.</p>
+                            <p className="text-sm mt-1">Clique em "Adicionar novo Paciente" para começar a primeira ficha.</p>
                         </div>
                     )}
 

@@ -197,7 +197,7 @@ export default function ClinicsPage() {
                             </div>
 
                             <h2 className="text-2xl font-bold text-black mb-2 tracking-tight">Novo Consultorio</h2>
-                            <p className="text-sm text-zinc-500 mb-8">Establish a new isolated environment for your clinic and patients.</p>
+                            <p className="text-sm text-zinc-500 mb-8">Adicione um novo consultorio.</p>
 
                             <form onSubmit={handleCreateClinic} className="space-y-6">
                                 <div className="space-y-2">

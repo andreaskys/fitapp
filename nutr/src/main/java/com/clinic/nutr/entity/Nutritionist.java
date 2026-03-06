@@ -1,5 +1,6 @@
 package com.clinic.nutr.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +8,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "nutritionists")
+@Table(name = "nutritionists", indexes = {
+        @Index(name = "idx_nutritionist_email", columnList = "email", unique = true)
+})
 public class Nutritionist {
 
     @Id
@@ -21,5 +24,6 @@ public class Nutritionist {
     private String email;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 }

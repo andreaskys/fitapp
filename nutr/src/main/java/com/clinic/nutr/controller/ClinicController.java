@@ -1,11 +1,14 @@
 package com.clinic.nutr.controller;
 
 import com.clinic.nutr.entity.Clinic;
+import com.clinic.nutr.entity.Nutritionist;
 import com.clinic.nutr.repository.ClinicRepository;
+import com.clinic.nutr.repository.NutritionistRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +22,14 @@ import java.util.Optional;
 public class ClinicController {
 
     private final ClinicRepository clinicRepository;
+    private final NutritionistRepository nutritionistRepository;
+
 
     @GetMapping
-    public List<Clinic> getAllClinics(){
-        return clinicRepository.findAll();
+    public ResponseEntity<List<Clinic>> getAllClinics(Principal principal){
+        String userEmail = principal.getName();
+        List<Clinic> userClinics = clinicRepository.findByNutritionist_Email(userEmail);
+        return ResponseEntity.ok(userClinics);
     }
 
     @GetMapping("/{id}")
@@ -33,7 +40,10 @@ public class ClinicController {
     }
 
     @PostMapping
-    public ResponseEntity<Clinic> createClinic(@RequestBody Clinic clinic){
+    public ResponseEntity<Clinic> createClinic(@RequestBody Clinic clinic, Principal principal){
+        String userEmail = principal.getName();
+        Nutritionist owner = nutritionistRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User not found!"));
+        clinic.setNutritionist(owner);
         Clinic savedClinic = clinicRepository.save(clinic);
         return ResponseEntity.ok(savedClinic);
     }
@@ -48,14 +58,14 @@ public class ClinicController {
     }
 
     @GetMapping("/{id}/metrics")
-    public ResponseEntity<Map<String, Object>> getClinicMetrics(@PathVariable Long id) {
-        Optional<Clinic> clinicOpt = clinicRepository.findById(id);
+    public ResponseEntity<Map<String, Object>> getClinicMetrics(@PathVariable Long id, Principal principal) {
+        Optional<Clinic> clinicOpt = clinicRepository.findByIdAndNutritionist_Email(id, principal.getName());
         if (clinicOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         Clinic clinic = clinicOpt.get();
         int totalPatients = clinic.getPatients().size();
-        String today = LocalDate.now().toString();
+        LocalDate today = LocalDate.now();
         long appointmentsToday = clinic.getPatients().stream()
                 .flatMap(patient -> patient.getAppointments().stream())
                 .filter(appointment -> today.equals(appointment.getAppointmentDate()))

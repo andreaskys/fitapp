@@ -5,8 +5,9 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Save, HeartPulse, BrainCircuit, Activity } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-// 1. IMPORT YOUR SECURE PROXY
 import { apiFetch } from "@/lib/proxy";
+// 1. IMPORT THE TOASTER
+import { toast } from "sonner";
 
 export default function NewIntakeForm({ params }: { params: Promise<{ clinicId: string }> }) {
     const { clinicId } = use(params);
@@ -40,29 +41,27 @@ export default function NewIntakeForm({ params }: { params: Promise<{ clinicId: 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
-
         const payload = {
             ...formData,
             age: formData.age ? parseInt(formData.age) : null,
-            physicalActivityFrequency: formData.physicalActivityFrequency ? parseInt(formData.physicalActivityFrequency) : null
+            physicalActivityFrequency: formData.physicalActivityFrequency ? parseInt(formData.physicalActivityFrequency) : null,
+            clinic: { id: parseInt(clinicId) }
         };
 
         try {
-            // 2. USE APIFETCH TO PASS THE SECURE JWT
             const res = await apiFetch(`/api/patients?clinicId=${clinicId}`, {
                 method: "POST",
-                // Headers are removed here because proxy.ts handles Content-Type and Authorization!
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload) // You no longer need the 'clinic: { id: ... }' inside the payload!
             });
-
             if (res.ok) {
-                // Instantly route back to the dashboard to see the new patient
+                toast.success("Paciente cadastrado com sucesso!");
                 router.push(`/clinics/${clinicId}/dashboard`);
             } else {
-                console.error("Failed to save patient. Status:", res.status);
+                toast.error("Erro ao salvar paciente. Verifique suas permissões.");
             }
         } catch (err) {
             console.error("API Connection Error:", err);
+            toast.error("Erro de conexão com o servidor.");
         } finally {
             setIsSubmitting(false);
         }
@@ -195,7 +194,7 @@ export default function NewIntakeForm({ params }: { params: Promise<{ clinicId: 
                             whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
                             className="px-10 py-5 bg-black text-white rounded-[1.5rem] font-bold text-sm shadow-xl shadow-black/10 hover:shadow-black/20 transition-all flex items-center gap-3 disabled:opacity-50"
                         >
-                            <Save size={18} /> {isSubmitting ? "Saving Patient..." : "Finish Patient Intake"}
+                            <Save size={18} /> {isSubmitting ? "Salvando Paciente..." : "Finalizar Cadastro"}
                         </motion.button>
                     </div>
                 </form>

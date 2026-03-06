@@ -1,5 +1,6 @@
 package com.clinic.nutr.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "clinics")
+@Table(name = "clinics", indexes = {
+        @Index(name = "idx_clinic_nutritionist_id", columnList = "nutritionist_id")
+})
 public class Clinic {
 
     @Id
@@ -22,4 +25,10 @@ public class Clinic {
 
     @OneToMany(mappedBy = "clinic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Patient> patients = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "nutritionist_id")
+    @JsonIgnore
+    private Nutritionist nutritionist;
+
 }

@@ -1,15 +1,25 @@
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 
-export const metadata = {
-    title: "Nutrition Clinic",
-    description: "Minimalist clinic management",
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+    title: "Clinic Workspace",
+    description: "Manage your clinic and patients securely.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+                                       children,
+                                   }: Readonly<{
+    children: React.ReactNode;
+}>) {
     return (
         <html lang="en">
-        <body className="bg-white text-black min-h-screen">
+        <body className={inter.className}>
         {children}
+        <Toaster position="top-center" richColors theme="light" />
         </body>
         </html>
     );

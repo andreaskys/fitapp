@@ -144,16 +144,13 @@ export default function PatientProfilePage({ params }: { params: Promise<{ clini
                 <Link href={`/clinics/${clinicId}/dashboard`} className="flex items-center gap-2 text-zinc-400 hover:text-black transition-colors font-medium text-sm group">
                     <div className="p-2 rounded-full group-hover:bg-zinc-100 transition-colors"><ArrowLeft size={18} /></div> Dashboard
                 </Link>
-                <h1 className="text-2xl font-bold tracking-tight text-black">{patient.name} <span className="text-zinc-300 font-normal ml-2">ID: #{patientId}</span></h1>
+                <h1 className="text-2xl font-bold tracking-tight text-black">{patient.name} <span className="text-zinc-300 font-normal ml-2"></span></h1>
 
                 <div className="flex items-center gap-4">
                     <button onClick={handleDeletePatient} className="flex items-center gap-2 text-zinc-400 hover:text-red-500 transition-colors font-medium text-sm group">
-                        Delete File <div className="p-2 rounded-full group-hover:bg-red-50 transition-colors"><Trash2 size={18} /></div>
+                        Deletar Ficha <div className="p-2 rounded-full group-hover:bg-red-50 transition-colors"><Trash2 size={18} /></div>
                     </button>
                     <div className="w-px h-4 bg-zinc-200"></div>
-                    <button className="flex items-center gap-2 text-zinc-400 hover:text-black transition-colors font-medium text-sm group">
-                        Sign Out <div className="p-2 rounded-full group-hover:bg-zinc-100 transition-colors"><LogOut size={18} /></div>
-                    </button>
                 </div>
             </motion.header>
 
@@ -165,40 +162,40 @@ export default function PatientProfilePage({ params }: { params: Promise<{ clini
                         <div className="flex items-center justify-between border-b-2 border-blue-50 pb-3 mb-10">
                             <div className="flex items-center gap-2">
                                 <Activity size={20} className="text-blue-500" />
-                                <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-[#1d1d1f]">Appointment Session // New Entry</h2>
+                                <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-[#1d1d1f]">Nova Consulta</h2>
                             </div>
                             {success && <span className="text-emerald-500 text-xs font-bold uppercase flex items-center gap-1"><CheckCircle size={14}/> Saved</span>}
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-8">
                             <div className="space-y-2">
-                                <label className={labelStyle}>Date</label>
+                                <label className={labelStyle}>Data de hoje</label>
                                 <input type="date" name="appointmentDate" value={appointmentData.appointmentDate} onChange={handleChange} required className={inputStyle} />
                             </div>
 
                             <div className="space-y-2">
-                                <label className={`${labelStyle} flex items-center gap-1.5`}><Utensils size={14}/> Prescribed Diet Number</label>
+                                <label className={`${labelStyle} flex items-center gap-1.5`}><Utensils size={14}/> Numero da dieta prescrita</label>
                                 <input type="number" name="dietNumber" value={appointmentData.dietNumber} onChange={handleChange} className={inputStyle} placeholder="e.g. 4" />
                             </div>
 
                             <div className="space-y-2">
-                                <label className={`${labelStyle} flex items-center gap-1.5`}><Weight size={14}/> Weight (kg)</label>
+                                <label className={`${labelStyle} flex items-center gap-1.5`}><Weight size={14}/> Peso (kg)</label>
                                 <input type="number" step="0.1" name="weight" value={appointmentData.weight} onChange={handleChange} required className={`${inputStyle} font-bold text-lg`} placeholder="0.0" />
                             </div>
 
                             <div className="space-y-2">
-                                <label className={`${labelStyle} flex items-center gap-1.5`}><Ruler size={14}/> Hip Measure (cm)</label>
+                                <label className={`${labelStyle} flex items-center gap-1.5`}><Ruler size={14}/> Medida Quadril (cm)</label>
                                 <input type="number" step="0.1" name="hipMeasure" value={appointmentData.hipMeasure} onChange={handleChange} required className={`${inputStyle} font-bold text-lg`} placeholder="0.0" />
                             </div>
 
                             <div className="space-y-2">
-                                <label className={`${labelStyle} flex items-center gap-1.5`}><Ruler size={14}/> Waist Measure (cm)</label>
+                                <label className={`${labelStyle} flex items-center gap-1.5`}><Ruler size={14}/> Medida Cintura (cm)</label>
                                 <input type="number" step="0.1" name="waistMeasure" value={appointmentData.waistMeasure} onChange={handleChange} required className={`${inputStyle} font-bold text-lg`} placeholder="0.0" />
                             </div>
                         </div>
 
                         <div className="space-y-2 mb-10">
-                            <label className={labelStyle}>Session Observation</label>
+                            <label className={labelStyle}>Observação da consulta</label>
                             <textarea name="observations" value={appointmentData.observations} onChange={handleChange} className={inputStyle} rows={3} placeholder="Clinical notes, diet changes, or feedback..."></textarea>
                         </div>
 
@@ -232,10 +229,10 @@ export default function PatientProfilePage({ params }: { params: Promise<{ clini
                     <div className="flex items-center justify-between mb-8 pb-4 border-b border-zinc-50 shrink-0">
                         <div className="flex items-center gap-2">
                             <History size={18} className="text-zinc-300"/>
-                            <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">Clinical History</h3>
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400">Historico Clínico</h3>
                         </div>
                         <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-blue-500 bg-blue-50 px-3 py-1.5 rounded-full">
-                            <TrendingDown size={14} /> Progress
+                            <TrendingDown size={14} /> Progresso
                         </div>
                     </div>
 
@@ -291,15 +288,15 @@ export default function PatientProfilePage({ params }: { params: Promise<{ clini
 
                                     <div className="grid grid-cols-3 gap-2 bg-white p-3 rounded-xl border border-zinc-100 text-center shadow-sm">
                                         <div>
-                                            <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest mb-1">Weight</p>
+                                            <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest mb-1">Peso</p>
                                             <p className="font-bold text-sm text-black">{app.weight}<span className="text-[10px] text-zinc-400 ml-0.5">kg</span></p>
                                         </div>
                                         <div>
-                                            <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest mb-1">Hip</p>
+                                            <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest mb-1">Quadril</p>
                                             <p className="font-bold text-sm text-black">{app.hipMeasure}<span className="text-[10px] text-zinc-400 ml-0.5">cm</span></p>
                                         </div>
                                         <div>
-                                            <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest mb-1">Waist</p>
+                                            <p className="text-[9px] text-zinc-400 font-bold uppercase tracking-widest mb-1">Cintura</p>
                                             <p className="font-bold text-sm text-black">{app.waistMeasure}<span className="text-[10px] text-zinc-400 ml-0.5">cm</span></p>
                                         </div>
                                     </div>
@@ -309,8 +306,8 @@ export default function PatientProfilePage({ params }: { params: Promise<{ clini
                             <div className="h-full flex flex-col items-center justify-center text-center text-zinc-400 space-y-3 pb-10">
                                 <History size={32} className="opacity-20" />
                                 <div>
-                                    <p className="text-sm font-medium">No previous sessions</p>
-                                    <p className="text-xs mt-1">Records will appear here automatically.</p>
+                                    <p className="text-sm font-medium">Sem Consultas anteriores</p>
+                                    <p className="text-xs mt-1">Os dados aparecem aqui automaticamente.</p>
                                 </div>
                             </div>
                         )}
