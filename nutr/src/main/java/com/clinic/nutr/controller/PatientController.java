@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/patients")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class PatientController {
 
     private final PatientRepository patientRepository;

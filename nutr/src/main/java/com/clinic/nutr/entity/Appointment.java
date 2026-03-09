@@ -25,6 +25,7 @@ public class Appointment {
     private Integer dietNumber;
     private Double waistMeasure;
     private Double hipMeasure;
+    private String sessionAuriculotherapy;
 
     @Column(columnDefinition = "TEXT")
     private String observations;

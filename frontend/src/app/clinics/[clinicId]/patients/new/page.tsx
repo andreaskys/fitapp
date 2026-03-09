@@ -23,6 +23,7 @@ export default function NewIntakeForm({ params }: { params: Promise<{ clinicId: 
         auriculotherapyPoints: [] as string[]
     });
 
+
     const habitsConsumes = ["Leite", "Frutas e Verduras", "Carne", "Frango", "Peixe", "Ovo"];
     const auriculoFields = ["Constipação", "Ansiedade", "Insônia", "Retenção de Líquido", "Nervosismo", "Dor de cabeça"];
 
